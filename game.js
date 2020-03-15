@@ -20,6 +20,25 @@ const config = {
     // }
 };
 
+const map = [
+    [0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0,-1, 0, 0, 0, 0, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 0, 0, 0, 0, 0],
+    [0, 0, 0,-1, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0],
+    [0, 0, 0,-1, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0],
+    [0, 0, 0,-1, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0],
+    [0, 0, 0,-1, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0],
+    [0, 0, 0,-1,-1,-1,-1,-1,-1,-1, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0]
+];
+
 const game = new Phaser.Game(config);
 
 const ENEMY_SPEED = 1/10000;
@@ -55,6 +74,13 @@ function create() {
     });
 
     this.nextEnemy = 0;
+
+    turrets = this.add.group({
+        classType: Turret,
+        runChildUpdate: true
+    });
+
+    this.input.on('pointerdown', placeTurret);
 };
 
 function update(time, delta) {
@@ -72,6 +98,9 @@ function update(time, delta) {
     }
 };
 
+// ---------------------------------------------------------------
+// ------------------------ ENEMY LOGIC --------------------------
+// ---------------------------------------------------------------
 const Enemy = new Phaser.Class({
     Extends: Phaser.GameObjects.Image,
     initialize: function Enemy(scene) {
@@ -107,6 +136,10 @@ const Enemy = new Phaser.Class({
     }
 });
 
+// ---------------------------------------------------------------
+// ----------------------- TURRET LOGIC --------------------------
+// ---------------------------------------------------------------
+
 const Turret = new Phaser.Class({
     Extends: Phaser.GameObjects.Image,
     initialize: function Turret(scene) {
@@ -128,6 +161,28 @@ const Turret = new Phaser.Class({
     }
 });
 
+// checks if grid spot is valid, then adds a visible turret at that coordinate when mouse is clicked
+function placeTurret(pointer) {
+    let i = Math.floor(pointer.y/GRID_SIZE);
+    let j = Math.floor(pointer.x/GRID_SIZE);
+    if (canPlaceTurret(i, j)) {
+        const turret = turrets.get();
+        if (turret) {
+            turret.setActive(true);
+            turret.setVisible(true);
+            turret.place(i, j);
+        }
+    }
+};
+
+// returns boolean of whether turret can be placed at a grid spot
+function canPlaceTurret(i, j) {
+    return map[i][j] === 0;
+} ;
+
+// ---------------------------------------------------------------
+// ------------------------- TEMP GRID ---------------------------
+// ---------------------------------------------------------------
 function drawGrid(graphics) {
     graphics.lineStyle(1, 0x0000ff, 0.8);
     for (let i = 0; i < 16; i++) {
