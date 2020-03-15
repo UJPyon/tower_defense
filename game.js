@@ -33,7 +33,11 @@ function preload() {
 };
 
 function create() {
+
+    // here we call our drawGrid method to create a grid
     graphics = this.add.graphics();
+    drawGrid(graphics);
+
     path = this.add.path(200,0);
     path.lineTo(200, 500);
     path.lineTo(450, 500);
@@ -101,3 +105,17 @@ const Enemy = new Phaser.Class({
         }
     }
 });
+
+function drawGrid(graphics) {
+    graphics.lineStyle(1, 0x0000ff, 0.8);
+    for (let i = 0; i < 8; i++) {
+        graphics.moveTo(0, i * 64);
+        graphics.lineTo(1200, i * 64);
+    }
+    for (let j = 0; j < 10; j++) {
+        graphics.moveTo(j * 64, 0);
+        graphics.lineTo(j * 64, 800);
+    }
+    graphics.strokePath();
+};
+
