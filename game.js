@@ -23,6 +23,7 @@ const config = {
 const game = new Phaser.Game(config);
 
 const ENEMY_SPEED = 1/10000;
+const GRID_SIZE = 50;
 
 let graphics;
 let path;
@@ -38,12 +39,12 @@ function create() {
     graphics = this.add.graphics();
     drawGrid(graphics);
 
-    path = this.add.path(200,0);
-    path.lineTo(200, 500);
-    path.lineTo(450, 500);
-    path.lineTo(450, 200);
-    path.lineTo(900, 200);
-    path.lineTo(900, 800);
+    path = this.add.path(175,0);
+    path.lineTo(175, 475);
+    path.lineTo(475, 475);
+    path.lineTo(475, 225);
+    path.lineTo(925, 225);
+    path.lineTo(925, 800);
 
     graphics.lineStyle(3, 0xffffff, 1);
     path.draw(graphics);
@@ -106,15 +107,36 @@ const Enemy = new Phaser.Class({
     }
 });
 
+const Turret = new Phaser.Class({
+    Extends: Phaser.GameObjects.Image,
+    initialize: function Turret(scene) {
+        Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sprites', 'turret');
+        this.nextTic = 0;
+    },
+
+    // turrets will be placed according to the grid
+    place: function (i, j) {
+        this.y = i * GRID_SIZE + GRID_SIZE/2;
+        this.x = j * GRID_SIZE + GRID_SIZE/2;
+        map[i][j] = 1;
+    },
+    update: function (time, delta) {
+        // time to shoot
+        if (time > this.nextTic) {
+            this.nextTic = time + 1000;
+        }
+    }
+});
+
 function drawGrid(graphics) {
     graphics.lineStyle(1, 0x0000ff, 0.8);
-    for (let i = 0; i < 8; i++) {
-        graphics.moveTo(0, i * 64);
-        graphics.lineTo(1200, i * 64);
+    for (let i = 0; i < 16; i++) {
+        graphics.moveTo(0, i * GRID_SIZE);
+        graphics.lineTo(1200, i * GRID_SIZE);
     }
-    for (let j = 0; j < 10; j++) {
-        graphics.moveTo(j * 64, 0);
-        graphics.lineTo(j * 64, 800);
+    for (let j = 0; j < 24; j++) {
+        graphics.moveTo(j * GRID_SIZE, 0);
+        graphics.lineTo(j * GRID_SIZE, 800);
     }
     graphics.strokePath();
 };
