@@ -20,6 +20,14 @@ const config = {
     }
 };
 
+const ENEMY_SPEED = 1/10000;
+const GRID_SIZE = 50;
+const BULLET_DAMAGE = 50;
+const TOWER_1_RANGE = 400;
+const BULLET_TIME = 750;
+const ENEMY_SPAWN_INTERVAL = 1500;
+const ENEMY_HP = 2000;
+
 const map = [
     [0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -41,12 +49,7 @@ const map = [
 
 const game = new Phaser.Game(config);
 
-const ENEMY_SPEED = 1/10000;
-const GRID_SIZE = 50;
-const BULLET_DAMAGE = 50;
-const TOWER_1_RANGE = 400;
-const BULLET_TIME = 750;
-
+// The below 2 variables are only for dev purposes to visually see the grid and travel path of enemies, comment out for final version
 let graphics;
 let path;
 
@@ -103,118 +106,10 @@ function update(time, delta) {
 
             // place the enemy at the start of the path
             enemy.startOnPath();
-            this.nextEnemy = time + 2000;
+            this.nextEnemy = time + ENEMY_SPAWN_INTERVAL;
         }
     }
 };
-
-// ---------------------------------------------------------------
-// ------------------------ ENEMY LOGIC --------------------------
-// ---------------------------------------------------------------
-const Enemy = new Phaser.Class({
-    Extends: Phaser.GameObjects.Image,
-
-    initialize: function Enemy(scene) {
-        Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sprites', 'enemy');
-        this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
-        this.hp = 100;
-    },
-
-    startOnPath: function () {
-        // set the t parameter at the start of the path
-        this.follower.t = 0;
-
-        // get x and y of the given t point
-        path.getPoint(this.follower.t, this.follower.vec);
-
-        // set the x and y of our enemy to the received from the previous step
-        this.setPosition(this.follower.vec.x, this.follower.vec.y);
-
-    },
-
-    receiveDamage: function(damage) {
-        this.hp -= damage;
-
-        // if hp drops below 0 we deactivate this enemy
-        if (this.hp <= 0) {
-            this.setActive(false);
-            this.setVisible(false);
-        }
-    },
-
-    update: function (time, delta) {
-        // move the t point along the path, 0 is the start and 0 is the end
-        this.follower.t += ENEMY_SPEED * delta;
-
-        // get the new x and y coordinates in vec
-        path.getPoint(this.follower.t, this.follower.vec);
-
-        // update enemy x and y to the newly obtained x and y
-        this.setPosition(this.follower.vec.x, this.follower.vec.y);
-
-        // if we have reached the end of the path, remove the enemy
-        if (this.follower.t >= 1) {
-            this.setActive(false);
-            this.setVisible(false);
-        }
-    }
-});
-
-// ---------------------------------------------------------------
-// ----------------------- TURRET LOGIC --------------------------
-// ---------------------------------------------------------------
-
-const Turret = new Phaser.Class({
-    Extends: Phaser.GameObjects.Image,
-
-    initialize: function Turret(scene) {
-        Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sprites', 'turret');
-        this.nextTic = 0;
-    },
-
-    // turrets will be placed according to the grid
-    place: function (i, j) {
-        this.y = i * GRID_SIZE + GRID_SIZE/2;
-        this.x = j * GRID_SIZE + GRID_SIZE/2;
-        map[i][j] = 1;
-    },
-
-    fire: function() {
-        const enemy = getEnemy(this.x, this.y, TOWER_1_RANGE);
-        if (enemy) {
-            const angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
-            addBullet(this.x, this.y, angle);
-            this.angle = (angle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;
-        }
-    },
-
-    update: function (time, delta) {
-        // time to shoot
-        if (time > this.nextTic) {
-            this.fire();
-            this.nextTic = time + BULLET_TIME;
-        }
-    }
-});
-
-// checks if grid spot is valid, then adds a visible turret at that coordinate when mouse is clicked
-function placeTurret(pointer) {
-    let i = Math.floor(pointer.y/GRID_SIZE);
-    let j = Math.floor(pointer.x/GRID_SIZE);
-    if (canPlaceTurret(i, j)) {
-        const turret = turrets.get();
-        if (turret) {
-            turret.setActive(true);
-            turret.setVisible(true);
-            turret.place(i, j);
-        }
-    }
-};
-
-// returns boolean of whether turret can be placed at a grid spot
-function canPlaceTurret(i, j) {
-    return map[i][j] === 0;
-} ;
 
 // ---------------------------------------------------------------
 // ------------------------- TEMP GRID ---------------------------
@@ -232,76 +127,184 @@ function drawGrid(graphics) {
     graphics.strokePath();
 };
 
-// ---------------------------------------------------------------
-// ----------------------- TURRET BULLET -------------------------
-// ---------------------------------------------------------------
-const Bullet = new Phaser.Class({
-    Extends: Phaser.GameObjects.Image,
+// // ---------------------------------------------------------------
+// // ------------------------ ENEMY LOGIC --------------------------
+// // ---------------------------------------------------------------
+// const Enemy = new Phaser.Class({
+//     Extends: Phaser.GameObjects.Image,
 
-    initialize: function Bullet(scene) {
-        Phaser.GameObjects.Image.call(this, scene, 0, 0, 'bullet');
+//     initialize: function Enemy(scene) {
+//         Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sprites', 'enemy');
+//         this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
+//         this.hp = 100;
+//     },
 
-        this.dx = 0;
-        this.dy = 0;
-        this.lifespan = 0;
-        this.speed = Phaser.Math.GetSpeed(600, 1);
-    },
+//     startOnPath: function () {
+//         // set the t parameter at the start of the path
+//         this.follower.t = 0;
+
+//         // get x and y of the given t point
+//         path.getPoint(this.follower.t, this.follower.vec);
+
+//         // set the x and y of our enemy to the received from the previous step
+//         this.setPosition(this.follower.vec.x, this.follower.vec.y);
+
+//     },
+
+//     receiveDamage: function(damage) {
+//         this.hp -= damage;
+
+//         // if hp drops below 0 we deactivate this enemy
+//         if (this.hp <= 0) {
+//             this.setActive(false);
+//             this.setVisible(false);
+//         }
+//     },
+
+//     update: function (time, delta) {
+//         // move the t point along the path, 0 is the start and 0 is the end
+//         this.follower.t += ENEMY_SPEED * delta;
+
+//         // get the new x and y coordinates in vec
+//         path.getPoint(this.follower.t, this.follower.vec);
+
+//         // update enemy x and y to the newly obtained x and y
+//         this.setPosition(this.follower.vec.x, this.follower.vec.y);
+
+//         // if we have reached the end of the path, remove the enemy
+//         if (this.follower.t >= 1) {
+//             this.setActive(false);
+//             this.setVisible(false);
+//         }
+//     }
+// });
+
+// // ---------------------------------------------------------------
+// // ----------------------- TURRET LOGIC --------------------------
+// // ---------------------------------------------------------------
+
+// const Turret = new Phaser.Class({
+//     Extends: Phaser.GameObjects.Image,
+
+//     initialize: function Turret(scene) {
+//         Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sprites', 'turret');
+//         this.nextTic = 0;
+//     },
+
+//     // turrets will be placed according to the grid
+//     place: function (i, j) {
+//         this.y = i * GRID_SIZE + GRID_SIZE/2;
+//         this.x = j * GRID_SIZE + GRID_SIZE/2;
+//         map[i][j] = 1;
+//     },
+
+//     fire: function() {
+//         const enemy = getEnemy(this.x, this.y, TOWER_1_RANGE);
+//         if (enemy) {
+//             const angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
+//             addBullet(this.x, this.y, angle);
+//             this.angle = (angle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;
+//         }
+//     },
+
+//     update: function (time, delta) {
+//         // time to shoot
+//         if (time > this.nextTic) {
+//             this.fire();
+//             this.nextTic = time + BULLET_TIME;
+//         }
+//     }
+// });
+
+// // checks if grid spot is valid, then adds a visible turret at that coordinate when mouse is clicked
+// function placeTurret(pointer) {
+//     let i = Math.floor(pointer.y/GRID_SIZE);
+//     let j = Math.floor(pointer.x/GRID_SIZE);
+//     if (canPlaceTurret(i, j)) {
+//         const turret = turrets.get();
+//         if (turret) {
+//             turret.setActive(true);
+//             turret.setVisible(true);
+//             turret.place(i, j);
+//         }
+//     }
+// };
+
+// // returns boolean of whether turret can be placed at a grid spot
+// function canPlaceTurret(i, j) {
+//     return map[i][j] === 0;
+// } ;
+
+// // ---------------------------------------------------------------
+// // ----------------------- TURRET BULLET -------------------------
+// // ---------------------------------------------------------------
+// const Bullet = new Phaser.Class({
+//     Extends: Phaser.GameObjects.Image,
+
+//     initialize: function Bullet(scene) {
+//         Phaser.GameObjects.Image.call(this, scene, 0, 0, 'bullet');
+
+//         this.dx = 0;
+//         this.dy = 0;
+//         this.lifespan = 0;
+//         this.speed = Phaser.Math.GetSpeed(600, 1);
+//     },
     
-    fire: function (x, y, angle) {
-        this.setActive(true);
-        this.setVisible(true);
+//     fire: function (x, y, angle) {
+//         this.setActive(true);
+//         this.setVisible(true);
 
-        // bullets fire from the middle of the screen to the given x/y
-        this.setPosition(x,y);
+//         // bullets fire from the middle of the screen to the given x/y
+//         this.setPosition(x,y);
 
-        // this will rotate the bullets as they are fired, but for now commented out b/c bullets are round
-        // this.setRotation(angle);
+//         // this will rotate the bullets as they are fired, but for now commented out b/c bullets are round
+//         // this.setRotation(angle);
 
-        this.dx = Math.cos(angle);
-        this.dy = Math.sin(angle);
+//         this.dx = Math.cos(angle);
+//         this.dy = Math.sin(angle);
 
-        this.lifespan = 300;
-    },
+//         this.lifespan = 300;
+//     },
 
-    update: function (time, delta) {
-        this.lifespan -= delta;
-        this.x += this.dx * (this.speed * delta);
-        this.y += this.dy * (this.speed * delta);
+//     update: function (time, delta) {
+//         this.lifespan -= delta;
+//         this.x += this.dx * (this.speed * delta);
+//         this.y += this.dy * (this.speed * delta);
 
-        if (this.lifespan <= 0) {
-            this.setActive(false);
-            this.setVisible(false);
-        }
-    }
-});
+//         if (this.lifespan <= 0) {
+//             this.setActive(false);
+//             this.setVisible(false);
+//         }
+//     }
+// });
 
-function addBullet(x, y, angle) {
-    const bullet = bullets.get();
-    if (bullet) {
-        bullet.fire(x, y, angle);
-    }
-}
+// function addBullet(x, y, angle) {
+//     const bullet = bullets.get();
+//     if (bullet) {
+//         bullet.fire(x, y, angle);
+//     }
+// }
 
-// in the getEnemy function, we iterate through the children of the enemies group and test if the child is active, and then if the distance is less than the third parameter
-// this function will use the Phaser.Math.Distance.Between to calculate the distance between two points
-function getEnemy(x, y, distance) {
-    const enemyUnits = enemies.getChildren();
-    for (let i = 0; i < enemyUnits.length; i++) {
-        if (enemyUnits[i].active && Phaser.Math.Distance.Between(x, y, enemyUnits[i].x, enemyUnits[i].y) <= distance) {
-            return enemyUnits[i];
-        }
-        return false;
-    }
-};
+// // in the getEnemy function, we iterate through the children of the enemies group and test if the child is active, and then if the distance is less than the third parameter
+// // this function will use the Phaser.Math.Distance.Between to calculate the distance between two points
+// function getEnemy(x, y, distance) {
+//     const enemyUnits = enemies.getChildren();
+//     for (let i = 0; i < enemyUnits.length; i++) {
+//         if (enemyUnits[i].active && Phaser.Math.Distance.Between(x, y, enemyUnits[i].x, enemyUnits[i].y) <= distance) {
+//             return enemyUnits[i];
+//         }
+//         return false;
+//     }
+// };
 
-function damageEnemy(enemy, bullet) {
-    // only if both enemy and bullet are alive
-    if (enemy.active === true && bullet.active === true) {
-        // we remove the bullet right away
-        bullet.setActive(false);
-        bullet.setVisible(false);
+// function damageEnemy(enemy, bullet) {
+//     // only if both enemy and bullet are alive
+//     if (enemy.active === true && bullet.active === true) {
+//         // we remove the bullet right away
+//         bullet.setActive(false);
+//         bullet.setVisible(false);
 
-        // decrease the enemy hp with BULLET_DAMAGE
-        enemy.receiveDamage(BULLET_DAMAGE);
-    }
-};
+//         // decrease the enemy hp with BULLET_DAMAGE
+//         enemy.receiveDamage(BULLET_DAMAGE);
+//     }
+// };
