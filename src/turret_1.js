@@ -5,12 +5,14 @@ const Turret = new Phaser.Class({
         Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sprites', 'turret');
         this.nextTic = 0;
     },
-
+    
     // turrets will be placed according to the grid
     place: function (i, j) {
         this.y = i * GRID_SIZE + GRID_SIZE/2;
         this.x = j * GRID_SIZE + GRID_SIZE/2;
         map[i][j] = 1;
+        const circle = new Phaser.Geom.Circle(this.x, this.y, TOWER_1_RANGE);
+        graphics.strokeCircleShape(circle);
     },
 
     fire: function() {
@@ -26,7 +28,7 @@ const Turret = new Phaser.Class({
         // time to shoot
         if (time > this.nextTic) {
             this.fire();
-            this.nextTic = time + BULLET_TIME;
+            this.nextTic = time + RELOAD_TIME;
         }
     }
 });
@@ -54,10 +56,13 @@ function canPlaceTurret(i, j) {
 // this function will use the Phaser.Math.Distance.Between to calculate the distance between two points
 function getEnemy(x, y, distance) {
     const enemyUnits = enemies.getChildren();
+    debugger
     for (let i = 0; i < enemyUnits.length; i++) {
+        debugger
         if (enemyUnits[i].active && Phaser.Math.Distance.Between(x, y, enemyUnits[i].x, enemyUnits[i].y) <= distance) {
             return enemyUnits[i];
         }
         return false;
     }
 };
+

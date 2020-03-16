@@ -1,22 +1,38 @@
 {
     "name": "tower_defense",
     "version": "0.0.1",
-    "description": "Phaser 3 Tower Defense Game",
-    "main": "index.js",
+    "description": "Tower Defense Game",
+    "main": "game.js",
     "scripts": {
-        "start": "./node_modules/.bin/http-server -s -o",
-        "update": "node ./build.js",
-        "screenshots": "node ./generate-screenshots.js",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "webpack-dev-server --config webpack.dev.js",
+        "webpack:watch": "webpack --watch --config webpack.dev.js",
+        "webpack:build": "webpack --config webpack.prod.js  --optimize-minimize"
     },
+    "keywords": [],
     "author": "",
     "license": "ISC",
     "devDependencies": {
-        "directory-tree": "^2.2.4",
-        "fs-extra": "^8.1.0",
-        "http-server": "^0.12.1",
-        "monaco-editor": "^0.18.1",
-        "puppeteer": "^2.0.0"
+        "webpack": "^4.41.2",
+        "webpack-cli": "^3.3.9"
     },
-    "dependencies": {}
+    "dependencies": {
+        "@babel/core": "^7.6.4",
+        "@babel/preset-env": "^7.6.3",
+        "autoprefixer": "^9.6.5",
+        "babel-loader": "^8.0.6",
+        "css-loader": "^3.2.0",
+        "fibers": "^4.0.1",
+        "mini-css-extract-plugin": "^0.8.0",
+        "postcss-loader": "^3.0.0",
+        "style-loader": "^1.0.0",
+        "webpack-dev-server": "^3.8.2",
+        "webpack-merge": "^4.2.2"
+    },
+    "browserslist": [
+        "last 1 version",
+        "> 1%",
+        "maintained node versions",
+        "not dead"
+    ]
 }

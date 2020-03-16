@@ -23,8 +23,9 @@ const config = {
 const ENEMY_SPEED = 1/10000;
 const GRID_SIZE = 50;
 const BULLET_DAMAGE = 50;
-const TOWER_1_RANGE = 400;
-const BULLET_TIME = 750;
+const BULLET_SPEED = 1200;
+const TOWER_1_RANGE = 200;
+const RELOAD_TIME = 750;
 const ENEMY_SPAWN_INTERVAL = 1500;
 const ENEMY_HP = 2000;
 

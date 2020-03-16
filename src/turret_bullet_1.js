@@ -7,7 +7,7 @@ const Bullet = new Phaser.Class({
         this.dx = 0;
         this.dy = 0;
         this.lifespan = 0;
-        this.speed = Phaser.Math.GetSpeed(600, 1);
+        this.speed = Phaser.Math.GetSpeed(BULLET_SPEED, 1);
     },
     
     fire: function (x, y, angle) {
@@ -23,7 +23,7 @@ const Bullet = new Phaser.Class({
         this.dx = Math.cos(angle);
         this.dy = Math.sin(angle);
 
-        this.lifespan = 300;
+        this.lifespan = TOWER_1_RANGE;
     },
 
     update: function (time, delta) {
