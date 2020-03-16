@@ -24,8 +24,9 @@ const Enemy = new Phaser.Class({
 
         // if hp drops below 0 we deactivate this enemy
         if (this.hp <= 0) {
-            this.setActive(false);
-            this.setVisible(false);
+            enemies.remove(this);
+            // this.setActive(false);
+            // this.setVisible(false);
         }
     },
 
@@ -41,8 +42,9 @@ const Enemy = new Phaser.Class({
 
         // if we have reached the end of the path, remove the enemy
         if (this.follower.t >= 1) {
-            this.setActive(false);
-            this.setVisible(false);
+            enemies.remove(this);
+            // this.setActive(false);
+            // this.setVisible(false);
         }
     }
 });
