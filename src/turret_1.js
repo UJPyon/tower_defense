@@ -56,11 +56,13 @@ function canPlaceTurret(i, j) {
 // this function will use the Phaser.Math.Distance.Between to calculate the distance between two points
 function getEnemy(x, y, distance) {
     const enemyUnits = enemies.getChildren();
+    debugger
     for (let i = 0; i < enemyUnits.length; i++) {
+        debugger
         if (enemyUnits[i].active && Phaser.Math.Distance.Between(x, y, enemyUnits[i].x, enemyUnits[i].y) <= distance) {
             return enemyUnits[i];
         }
-        return false;
     }
+    return false;
 };
 

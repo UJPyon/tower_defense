@@ -27,7 +27,7 @@ const BULLET_SPEED = 1200;
 const TOWER_1_RANGE = 200;
 const RELOAD_TIME = 750;
 const ENEMY_SPAWN_INTERVAL = 800;
-const ENEMY_HP = 2000;
+const ENEMY_HP = 150;
 
 const map = [
     [0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -101,7 +101,6 @@ function update(time, delta) {
     // if its time for the next enemy
     if (time > this.nextEnemy) {
         const enemy = enemies.get();
-        debugger
     //     const enemy = enemies.get();
     //     if (enemy) {
     //         enemy.setActive(true);
