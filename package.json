@@ -1,0 +1,22 @@
+{
+    "name": "tower_defense",
+    "version": "0.0.1",
+    "description": "Phaser 3 Tower Defense Game",
+    "main": "index.js",
+    "scripts": {
+        "start": "./node_modules/.bin/http-server -s -o",
+        "update": "node ./build.js",
+        "screenshots": "node ./generate-screenshots.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "directory-tree": "^2.2.4",
+        "fs-extra": "^8.1.0",
+        "http-server": "^0.12.1",
+        "monaco-editor": "^0.18.1",
+        "puppeteer": "^2.0.0"
+    },
+    "dependencies": {}
+}
