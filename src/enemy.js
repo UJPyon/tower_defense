@@ -7,7 +7,7 @@ const Enemy = new Phaser.Class({
         this.hp = ENEMY_HP;
     },
 
-    startOnPath: function () {
+    startOnPath: function (path) {
         // set the t parameter at the start of the path
         this.follower.t = 0;
 

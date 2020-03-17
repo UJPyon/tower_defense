@@ -4,13 +4,13 @@ const config = {
     width: 1200,
     height: 800,
     backgroundColor: 0x000000,
-    // scene: [Scene1, Scene2],
-    scene: {
-        key: 'main',
-        preload: preload,
-        create: create,
-        update: update
-    },
+    scene: [Level1],
+    // scene: {
+    //     key: 'main',
+    //     preload: preload,
+    //     create: create,
+    //     update: update
+    // },
     // pixelArt: true,
     physics: {
         default: "arcade",
@@ -51,82 +51,82 @@ const map = [
 const game = new Phaser.Game(config);
 
 // The below 2 variables are only for dev purposes to visually see the grid and travel path of enemies, comment out for final version
-let graphics;
-let path;
+// let graphics;
+// let path;
 
-function preload() {
-    this.load.atlas('sprites', 'assets/sprites/spritesheet.png', 'assets/sprites/spritesheet.json');
-    this.load.image('bullet', 'assets/images/bullet.png');
-};
+// function preload() {
+//     this.load.atlas('sprites', 'assets/sprites/spritesheet.png', 'assets/sprites/spritesheet.json');
+//     this.load.image('bullet', 'assets/images/bullet.png');
+// };
 
-function create() {
+// function create() {
 
-    // here we call our drawGrid method to create a grid
-    graphics = this.add.graphics();
-    drawGrid(graphics);
+//     // here we call our drawGrid method to create a grid
+//     graphics = this.add.graphics();
+//     drawGrid(graphics);
 
-    path = this.add.path(175,0);
-    path.lineTo(175, 475);
-    path.lineTo(475, 475);
-    path.lineTo(475, 225);
-    path.lineTo(925, 225);
-    path.lineTo(925, 800);
+//     path = this.add.path(175,0);
+//     path.lineTo(175, 475);
+//     path.lineTo(475, 475);
+//     path.lineTo(475, 225);
+//     path.lineTo(925, 225);
+//     path.lineTo(925, 800);
 
-    graphics.lineStyle(3, 0xffffff, 1);
-    path.draw(graphics);
+//     graphics.lineStyle(3, 0xffffff, 1);
+//     path.draw(graphics);
 
-    enemies = this.physics.add.group({
-        classType: Enemy,
-        runChildUpdate: true
-    });
+//     enemies = this.physics.add.group({
+//         classType: Enemy,
+//         runChildUpdate: true
+//     });
 
-    this.nextEnemy = 0;
+//     this.nextEnemy = 0;
 
-    turrets = this.add.group({
-        classType: Turret,
-        runChildUpdate: true
-    });
+//     turrets = this.add.group({
+//         classType: Turret,
+//         runChildUpdate: true
+//     });
 
-    this.input.on('pointerdown', placeTurret);
+//     this.input.on('pointerdown', placeTurret);
 
-    bullets = this.physics.add.group({
-        classType: Bullet,
-        runChildUpdate: true
-    });
+//     bullets = this.physics.add.group({
+//         classType: Bullet,
+//         runChildUpdate: true
+//     });
 
-    this.physics.add.overlap(enemies, bullets, damageEnemy);
-};
+//     this.physics.add.overlap(enemies, bullets, damageEnemy);
+// };
 
-function update(time, delta) {
-    // if its time for the next enemy
-    if (time > this.nextEnemy) {
-        const enemy = enemies.get();
-    //     const enemy = enemies.get();
-    //     if (enemy) {
-    //         enemy.setActive(true);
-    //         enemy.setVisible(true);
+// function update(time, delta) {
+//     // if its time for the next enemy
+//     if (time > this.nextEnemy) {
+//         const enemy = enemies.get();
+//     //     const enemy = enemies.get();
+//     //     if (enemy) {
+//     //         enemy.setActive(true);
+//     //         enemy.setVisible(true);
 
-    //         // place the enemy at the start of the path
-    //         enemy.startOnPath();
-    //         this.nextEnemy = time + ENEMY_SPAWN_INTERVAL;
-    //     }
-        enemy.startOnPath();
-        this.nextEnemy = time + ENEMY_SPAWN_INTERVAL;
-    }
-};
+//     //         // place the enemy at the start of the path
+//     //         enemy.startOnPath();
+//     //         this.nextEnemy = time + ENEMY_SPAWN_INTERVAL;
+//     //     }
+//         enemy.startOnPath();
+//         this.nextEnemy = time + ENEMY_SPAWN_INTERVAL;
+//     }
+// };
 
 // ---------------------------------------------------------------
 // ------------------------- TEMP GRID ---------------------------
 // ---------------------------------------------------------------
-function drawGrid(graphics) {
-    graphics.lineStyle(1, 0x0000ff, 0.8);
-    for (let i = 0; i < 16; i++) {
-        graphics.moveTo(0, i * GRID_SIZE);
-        graphics.lineTo(1200, i * GRID_SIZE);
-    }
-    for (let j = 0; j < 24; j++) {
-        graphics.moveTo(j * GRID_SIZE, 0);
-        graphics.lineTo(j * GRID_SIZE, 800);
-    }
-    graphics.strokePath();
-};
+// function drawGrid(graphics) {
+//     graphics.lineStyle(1, 0x0000ff, 0.8);
+//     for (let i = 0; i < 16; i++) {
+//         graphics.moveTo(0, i * GRID_SIZE);
+//         graphics.lineTo(1200, i * GRID_SIZE);
+//     }
+//     for (let j = 0; j < 24; j++) {
+//         graphics.moveTo(j * GRID_SIZE, 0);
+//         graphics.lineTo(j * GRID_SIZE, 800);
+//     }
+//     graphics.strokePath();
+// };
