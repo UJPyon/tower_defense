@@ -1,4 +1,5 @@
-let graphics, path, enemies, turrets, bullets, map;
+let graphics, path, enemies1, enemies2, turrets, bullets, map;
+let enemyCount = 0;
 
 class Level1 extends Phaser.Scene {
     constructor() {
@@ -43,18 +44,24 @@ class Level1 extends Phaser.Scene {
         graphics.lineStyle(3, 0xffffff, 1);
         path.draw(graphics);
 
-        enemies = this.physics.add.group({
-            classType: Enemy,
+        enemies1 = this.physics.add.group({
+            classType: Enemy1,
             runChildUpdate: true
         });
 
-        this.nextEnemy = 0;
+        enemies2 = this.physics.add.group({
+            classType: Enemy2,
+            runChildUpdate: true
+        });
+
+        this.nextEnemy1 = 0;
+        this.nextEnemy2 = 0;
 
         turrets = this.add.group({
             classType: Turret1,
             runChildUpdate: true
         });
-        debugger
+
         this.input.on('pointerdown', placeTurret);
 
         bullets = this.physics.add.group({
@@ -62,16 +69,33 @@ class Level1 extends Phaser.Scene {
             runChildUpdate: true
         });
 
-        this.physics.add.overlap(enemies, bullets, damageEnemy);
+        this.physics.add.overlap(enemies1, bullets, damageEnemy);
+        this.physics.add.overlap(enemies2, bullets, damageEnemy);
     }
 
     update(time, delta) {
         // if its time for the next enemy
-        if (time > this.nextEnemy) {
-            const enemy = enemies.get();
+        if (time > this.nextEnemy1 && enemyCount < 30) {
+            const enemy1 = enemies1.get();
 
-            enemy.startOnPath();
-            this.nextEnemy = time + ENEMY_SPAWN_INTERVAL;
+            enemy1.startOnPath();
+            this.nextEnemy1 = time + ENEMY_1_SPAWN_INTERVAL;
+            
+            enemyCount += 1;
         }
+
+        if (time > this.nextEnemy2 && enemyCount < 30) {
+            const enemy2 = enemies2.get();
+
+            enemy2.startOnPath();
+            this.nextEnemy2 = time + ENEMY_2_SPAWN_INTERVAL;
+            
+            enemyCount += 1;
+        }
+
+        // while (enemyCount < 30) {
+        //     this.spawnWave1(time);
+        //     this.spawnWave2(time);
+        // }
     };
 }

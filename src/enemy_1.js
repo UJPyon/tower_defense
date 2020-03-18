@@ -1,10 +1,10 @@
-const Enemy = new Phaser.Class({
+const Enemy1 = new Phaser.Class({
     Extends: Phaser.GameObjects.Image,
 
-    initialize: function Enemy(scene) {
+    initialize: function Enemy1(scene) {
         Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sprites', 'enemy');
         this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
-        this.hp = ENEMY_HP;
+        this.hp = ENEMY_1_HP;
     },
 
     startOnPath: function () {
@@ -26,13 +26,13 @@ const Enemy = new Phaser.Class({
         if (this.hp <= 0) {
             this.setActive(false);
             this.setVisible(false);
-            enemies.remove(this);
+            enemies1.remove(this);
         }
     },
 
     update: function (time, delta) {
         // move the t point along the path, 0 is the start and 0 is the end
-        this.follower.t += ENEMY_SPEED * delta;
+        this.follower.t += ENEMY_1_SPEED * delta;
 
         // get the new x and y coordinates in vec
         path.getPoint(this.follower.t, this.follower.vec);
@@ -44,7 +44,7 @@ const Enemy = new Phaser.Class({
         if (this.follower.t >= 1) {
             this.setActive(false);
             this.setVisible(false);
-            enemies.remove(this);
+            enemies1.remove(this);
         }
     }
 });

@@ -9,7 +9,7 @@ const config = {
     width: 1200,
     height: 800,
     backgroundColor: 0x000000,
-    scene: [Level2],
+    scene: [Level1],
     // scene: {
     //     key: 'main',
     //     preload: preload,
@@ -25,14 +25,17 @@ const config = {
     }
 };
 
-const ENEMY_SPEED = 1/5000;
+const ENEMY_1_SPEED = 1/5000;
+const ENEMY_2_SPEED = 1/8000;
 const GRID_SIZE = 50;
 const BULLET_DAMAGE = 50;
 const BULLET_SPEED = 1800;
 const TOWER_1_RANGE = 175;
 const RELOAD_TIME = 250;
-const ENEMY_SPAWN_INTERVAL = 800;
-const ENEMY_HP = 150;
+const ENEMY_1_SPAWN_INTERVAL = 800;
+const ENEMY_2_SPAWN_INTERVAL = 800;
+const ENEMY_1_HP = 150;
+const ENEMY_2_HP = 250;
 
 
 // const map = [

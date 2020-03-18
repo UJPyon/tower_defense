@@ -44,8 +44,8 @@ class Level2 extends Phaser.Scene {
         graphics.lineStyle(3, 0xffffff, 1);
         path.draw(graphics);
 
-        enemies = this.physics.add.group({
-            classType: Enemy,
+        enemies_1 = this.physics.add.group({
+            classType: Enemy1,
             runChildUpdate: true
         });
 
@@ -55,7 +55,7 @@ class Level2 extends Phaser.Scene {
             classType: Turret1,
             runChildUpdate: true
         });
-        debugger
+
         this.input.on('pointerdown', placeTurret);
 
         bullets = this.physics.add.group({
@@ -63,13 +63,13 @@ class Level2 extends Phaser.Scene {
             runChildUpdate: true
         });
 
-        this.physics.add.overlap(enemies, bullets, damageEnemy);
+        this.physics.add.overlap(enemies_1, bullets, damageEnemy);
     }
 
     update(time, delta) {
         // if its time for the next enemy
         if (time > this.nextEnemy) {
-            const enemy = enemies.get();
+            const enemy = enemies_1.get();
 
             enemy.startOnPath();
             this.nextEnemy = time + ENEMY_SPAWN_INTERVAL;
