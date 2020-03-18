@@ -1,7 +1,45 @@
+// class Turret1 extends Phaser.Class {
+//     constructor() {
+//         super("playGame");
+//     }
+    
+//     preload() {
+//         this.load.image("turret1", "../assets/images/turret_1.png");
+//         this.nextTic = 0;
+//     };
+
+//     place(i, j) {
+//         this.y = i * GRID_SIZE + GRID_SIZE/2;
+//         this.x = j * GRID_SIZE + GRID_SIZE/2;
+//         map[i][j] = 1;
+//         const circle = new Phaser.Geom.Circle(this.x, this.y, TOWER_1_RANGE);
+//         graphics.strokeCircleShape(circle);
+//     };
+
+//     fire() {
+//         const enemy = getEnemy(this.x, this.y, TOWER_1_RANGE);
+//         if (enemy) {
+//             const angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
+//             addBullet(this.x, this.y, angle);
+//             this.angle = (angle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;
+//         }
+//     };
+    
+//     update(time, delta) {
+//         // time to shoot
+//         if (time > this.nextTic) {
+//             this.fire();
+//             this.nextTic = time + RELOAD_TIME;
+//         }
+//     }
+// }
+
 const Turret1 = new Phaser.Class({
     Extends: Phaser.GameObjects.Image,
 
     initialize: function Turret(scene) {
+        debugger
+        // this.load.image("turret1", "../assets/turret_1.png");
         Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sprites', 'turret');
         this.nextTic = 0;
     },

@@ -4,12 +4,14 @@ const Enemy1 = new Phaser.Class({
     initialize: function Enemy1(scene) {
         Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sprites', 'enemy');
         this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
-        this.hp = ENEMY_1_HP;
+        this.hp = 0;
     },
-
+    
     startOnPath: function () {
         // set the t parameter at the start of the path
         this.follower.t = 0;
+        
+        this.hp = ENEMY_1_HP;
 
         // get x and y of the given t point
         path.getPoint(this.follower.t, this.follower.vec);
