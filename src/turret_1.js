@@ -55,7 +55,7 @@ function canPlaceTurret(i, j) {
 // in the getEnemy function, we iterate through the children of the enemies group and test if the child is active, and then if the distance is less than the third parameter
 // this function will use the Phaser.Math.Distance.Between to calculate the distance between two points
 function getEnemy(x, y, distance) {
-    const enemyUnits = enemies.getChildren();
+    const enemyUnits = enemies1.getChildren().concat(enemies2.getChildren());
     for (let i = 0; i < enemyUnits.length; i++) {
         if (enemyUnits[i].active && Phaser.Math.Distance.Between(x, y, enemyUnits[i].x, enemyUnits[i].y) <= distance) {
             return enemyUnits[i];

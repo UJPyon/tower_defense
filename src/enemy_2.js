@@ -31,7 +31,6 @@ const Enemy2 = new Phaser.Class({
     },
 
     update: function (time, delta) {
-        debugger
         // move the t point along the path, 0 is the start and 0 is the end
         this.follower.t += ENEMY_2_SPEED * delta;
 
