@@ -1,10 +1,15 @@
+// The below 2 variables are only for dev purposes to visually see the grid and travel path of enemies, comment out for final version
+// let graphics;
+// let path;
+// let enemies;
+
 const config = {
     type: Phaser.AUTO,
     parent: 'content',
     width: 1200,
     height: 800,
     backgroundColor: 0x000000,
-    scene: [Level1],
+    scene: [Level2],
     // scene: {
     //     key: 'main',
     //     preload: preload,
@@ -20,40 +25,37 @@ const config = {
     }
 };
 
-const ENEMY_SPEED = 1/10000;
+const ENEMY_SPEED = 1/5000;
 const GRID_SIZE = 50;
 const BULLET_DAMAGE = 50;
-const BULLET_SPEED = 1200;
-const TOWER_1_RANGE = 200;
-const RELOAD_TIME = 750;
+const BULLET_SPEED = 1800;
+const TOWER_1_RANGE = 175;
+const RELOAD_TIME = 250;
 const ENEMY_SPAWN_INTERVAL = 800;
 const ENEMY_HP = 150;
-let enemies = 
 
-const map = [
-    [0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0,-1, 0, 0, 0, 0, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 0, 0, 0, 0, 0],
-    [0, 0, 0,-1, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0],
-    [0, 0, 0,-1, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0],
-    [0, 0, 0,-1, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0],
-    [0, 0, 0,-1, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0],
-    [0, 0, 0,-1,-1,-1,-1,-1,-1,-1, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0]
-];
+
+// const map = [
+//     [0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+//     [0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+//     [0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+//     [0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+//     [0, 0, 0,-1, 0, 0, 0, 0, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 0, 0, 0, 0, 0],
+//     [0, 0, 0,-1, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0],
+//     [0, 0, 0,-1, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0],
+//     [0, 0, 0,-1, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0],
+//     [0, 0, 0,-1, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0],
+//     [0, 0, 0,-1,-1,-1,-1,-1,-1,-1, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0],
+//     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0],
+//     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0],
+//     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0],
+//     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0],
+//     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0],
+//     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0]
+// ];
 
 const game = new Phaser.Game(config);
 
-// The below 2 variables are only for dev purposes to visually see the grid and travel path of enemies, comment out for final version
-// let graphics;
-// let path;
 
 // function preload() {
 //     this.load.atlas('sprites', 'assets/sprites/spritesheet.png', 'assets/sprites/spritesheet.json');
@@ -119,15 +121,15 @@ const game = new Phaser.Game(config);
 // ---------------------------------------------------------------
 // ------------------------- TEMP GRID ---------------------------
 // ---------------------------------------------------------------
-// function drawGrid(graphics) {
-//     graphics.lineStyle(1, 0x0000ff, 0.8);
-//     for (let i = 0; i < 16; i++) {
-//         graphics.moveTo(0, i * GRID_SIZE);
-//         graphics.lineTo(1200, i * GRID_SIZE);
-//     }
-//     for (let j = 0; j < 24; j++) {
-//         graphics.moveTo(j * GRID_SIZE, 0);
-//         graphics.lineTo(j * GRID_SIZE, 800);
-//     }
-//     graphics.strokePath();
-// };
+function drawGrid(graphics) {
+    graphics.lineStyle(1, 0x0000ff, 0.8);
+    for (let i = 0; i < 16; i++) {
+        graphics.moveTo(0, i * GRID_SIZE);
+        graphics.lineTo(1200, i * GRID_SIZE);
+    }
+    for (let j = 0; j < 24; j++) {
+        graphics.moveTo(j * GRID_SIZE, 0);
+        graphics.lineTo(j * GRID_SIZE, 800);
+    }
+    graphics.strokePath();
+};

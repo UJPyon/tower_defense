@@ -5,16 +5,11 @@ const Enemy = new Phaser.Class({
         Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sprites', 'enemy');
         this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
         this.hp = ENEMY_HP;
-        this.path = null;
     },
 
-    startOnPath: function (path, enemies) {
-        debugger
+    startOnPath: function () {
         // set the t parameter at the start of the path
         this.follower.t = 0;
-
-        // set local state of enemy to current level's path and enemy in the level's enemy group
-        this.path = path;
 
         // get x and y of the given t point
         path.getPoint(this.follower.t, this.follower.vec);
@@ -36,12 +31,11 @@ const Enemy = new Phaser.Class({
     },
 
     update: function (time, delta) {
-        debugger
         // move the t point along the path, 0 is the start and 0 is the end
         this.follower.t += ENEMY_SPEED * delta;
 
         // get the new x and y coordinates in vec
-        this.path.getPoint(this.follower.t, this.follower.vec);
+        path.getPoint(this.follower.t, this.follower.vec);
 
         // update enemy x and y to the newly obtained x and y
         this.setPosition(this.follower.vec.x, this.follower.vec.y);
