@@ -28,6 +28,7 @@ const TOWER_1_RANGE = 200;
 const RELOAD_TIME = 750;
 const ENEMY_SPAWN_INTERVAL = 800;
 const ENEMY_HP = 150;
+let enemies = 
 
 const map = [
     [0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],

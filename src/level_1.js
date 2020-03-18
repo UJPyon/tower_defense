@@ -73,14 +73,28 @@ class Level1 extends Phaser.Scene {
     };
     
     update(time, delta) {
-        // if its time for the next enemy
+        // if it's time for the next enemy
+        debugger
         if (time > this.nextEnemy) {
+            debugger
             const enemy = this.enemies.get();
-
-            enemy.startOnPath(this.path);
+            enemy.startOnPath(this.path, this.enemies);
             this.nextEnemy = time + ENEMY_SPAWN_INTERVAL;
         }
+        // if (enemy.hp <= 0 || enemy.follower.t >= 1) {
+        //     enemy.setActive(false);
+        //     enemy.setVisible(false);
+        //     this.enemies.remove(enemy);
+        // }
     };
+
+    // removeEnemy(enemy) {
+    //     if (enemy.follower.t >= 1) {
+    //         enemy.setActive(false);
+    //         enemy.setVisible(false);
+    //         this.enemies.remove(enemy);
+    //     }
+    // };
     
     // ---------------------------------------------------------------
     // ------------------------- TEMP GRID ---------------------------
