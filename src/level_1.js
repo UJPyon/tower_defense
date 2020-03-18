@@ -26,9 +26,9 @@ class Level1 extends Phaser.Scene {
     };
 
     preload() {
-        this.load.atlas('sprites', 'assets/spritesheet.png', 'assets/spritesheet.json');
-        this.load.image('background', 'assets/background.png');
-        this.load.image('bullet', 'assets/bullet.png');
+        this.load.atlas('sprites', '../assets/spritesheet.png', '../assets/spritesheet.json');
+        this.load.image('background', '../assets/background.png');
+        this.load.image('bullet', '../assets/bullet.png');
         debugger
     };
 
