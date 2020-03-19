@@ -11,10 +11,10 @@ class MainMenu extends Phaser.Scene {
     create() {
         this.add.sprite(0, 0, 'background').setOrigin(0, 0);
 
-        EPT.Storage.initUnset('EPT-highscore', 0);
-        var highscore = EPT.Storage.get('EPT-highscore');
+        TDG.Storage.initUnset('EPT-highscore', 0);
+        const highscore = TDG.Storage.get('EPT-highscore');
 
-        var title = this.add.sprite(EPT.world.centerX, EPT.world.centerY - 50, 'title');
+        const title = this.add.sprite(TDG.world.centerX, TDG.world.centerY - 50, 'title');
         title.setOrigin(0.5);
 
         this.input.keyboard.on('keydown', this.handleKey, this);
@@ -22,24 +22,18 @@ class MainMenu extends Phaser.Scene {
         this.tweens.add({ targets: title, angle: title.angle - 2, duration: 1000, ease: 'Sine.easeInOut' });
         this.tweens.add({ targets: title, angle: title.angle + 4, duration: 2000, ease: 'Sine.easeInOut', yoyo: 1, loop: -1, delay: 1000 });
 
-        var buttonSettings = new Button(20, 20, 'button-settings', this.clickSettings, this);
+        const buttonSettings = new Button(20, 20, 'button-settings', this.clickSettings, this);
         buttonSettings.setOrigin(0, 0);
 
-        var buttonEnclave = new Button(20, EPT.world.height - 40, 'logo-enclave', this.clickEnclave, this, 'static');
-        buttonEnclave.setOrigin(0, 1);
-
-        var buttonStart = new Button(EPT.world.width - 20, EPT.world.height - 20, 'button-start', this.clickStart, this);
+        const buttonStart = new Button(TDG.world.width - 20, TDG.world.height - 20, 'button-start', this.clickStart, this);
         buttonStart.setOrigin(1, 1);
 
-        var fontHighscore = { font: '38px ' + EPT.text['FONT'], fill: '#ffde00', stroke: '#000', strokeThickness: 5 };
-        var textHighscore = this.add.text(EPT.world.width - 30, 60, EPT.text['menu-highscore'] + highscore, fontHighscore);
+        const fontHighscore = { font: '38px ' + TDG.text['FONT'], fill: '#ffde00', stroke: '#000', strokeThickness: 5 };
+        const textHighscore = this.add.text(TDG.world.width - 30, 60, TDG.text['menu-highscore'] + highscore, fontHighscore);
         textHighscore.setOrigin(1, 0);
 
-        buttonStart.x = EPT.world.width + buttonStart.width + 20;
-        this.tweens.add({ targets: buttonStart, x: EPT.world.width - 20, duration: 500, ease: 'Back' });
-
-        buttonEnclave.x = -buttonEnclave.width - 20;
-        this.tweens.add({ targets: buttonEnclave, x: 20, duration: 500, ease: 'Back' });
+        buttonStart.x = TDG.world.width + buttonStart.width + 20;
+        this.tweens.add({ targets: buttonStart, x: TDG.world.width - 20, duration: 500, ease: 'Back' });
 
         buttonSettings.y = -buttonSettings.height - 20;
         this.tweens.add({ targets: buttonSettings, y: 20, duration: 500, ease: 'Back' });
@@ -64,20 +58,14 @@ class MainMenu extends Phaser.Scene {
         }
     };
 
-    clickEnclave() {
-        console.log('Enclave clicked!');
-        EPT.Sfx.play('click');
-        window.top.location.href = 'https://enclavegames.com/';
-    };
-
     clickSettings() {
-        EPT.Sfx.play('click');
-        EPT.fadeOutScene('Settings', this);
+        TDG.Sfx.play('click');
+        TDG.fadeOutScene('Settings', this);
     };
 
     clickStart() {
-        EPT.Sfx.play('click');
-        EPT.fadeOutScene('Story', this);
+        TDG.Sfx.play('click');
+        TDG.fadeOutScene('Story', this);
     };
 
 }
