@@ -29,7 +29,7 @@ class Level1 extends Phaser.Scene {
         this.load.atlas('sprites', '../assets/spritesheet.png', '../assets/spritesheet.json');
         this.load.image('background', '../assets/background.png');
         this.load.image('bullet', '../assets/bullet.png');
-        debugger
+        this.load.image('turret1', '../assets/turret_1.png');
     };
 
     create() {

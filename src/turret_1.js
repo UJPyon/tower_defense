@@ -38,9 +38,8 @@ const Turret1 = new Phaser.Class({
     Extends: Phaser.GameObjects.Image,
 
     initialize: function Turret(scene) {
-        debugger
         // this.load.image("turret1", "../assets/turret_1.png");
-        Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sprites', 'turret');
+        Phaser.GameObjects.Image.call(this, scene, 0, 0, 'turret1');
         this.nextTic = 0;
     },
     
