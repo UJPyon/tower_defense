@@ -35,6 +35,8 @@ const ENEMY_2_HP = 250;
 
 const game = new Phaser.Game(config);
 
+
+
 class Game extends Phaser.Scene {
     constructor() {
         super('Game');
