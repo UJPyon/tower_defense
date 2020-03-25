@@ -1,4 +1,7 @@
 const Splash = function() {};
+let playSound = true,
+  playMusic = true,
+  music;
 
 Splash.prototype = {
 
@@ -6,11 +9,11 @@ Splash.prototype = {
     game.load.script('style', 'lib/style.js');
     game.load.script('mixins', 'lib/mixins.js');
     game.load.script('WebFont', 'vendor/webfontloader.js');
-    game.load.script('gamemenu','states/GameMenu.js');
-    game.load.script('game', 'states/Game.js');
-    game.load.script('gameover','states/GameOver.js');
-    game.load.script('credits', 'states/Credits.js');
-    game.load.script('options', 'states/Options.js');
+    game.load.script('gamemenu','states/game_menu.js');
+    game.load.script('game', 'states/game.js');
+    game.load.script('gameover','states/game_over.js');
+    game.load.script('credits', 'states/credits.js');
+    game.load.script('options', 'states/options.js');
   },
 
   loadBgm: function () {
@@ -37,7 +40,7 @@ Splash.prototype = {
   init: function () {
     this.loadingBar = game.make.sprite(game.world.centerX-(387/2), 400, "loading");
     this.logo = game.make.sprite(game.world.centerX, 200, 'brand');
-    this.status = game.make.text(game.world.centerX, 380, 'Loading...', {fill: 'white'});
+    this.status = game.make.text(game.world.centerX, 380, 'Loading Game...', {fill: 'white'});
     utils.centerGameObjects([this.logo, this.status]);
   },
 
@@ -57,11 +60,11 @@ Splash.prototype = {
 
   addGameStates: function () {
 
-    game.state.add("GameMenu",GameMenu);
-    game.state.add("Game",Game);
-    game.state.add("GameOver",GameOver);
-    game.state.add("Credits",Credits);
-    game.state.add("Options",Options);
+    game.state.add("GameMenu", GameMenu);
+    game.state.add("Game", Game);
+    game.state.add("GameOver", GameOver);
+    game.state.add("Credits", Credits);
+    game.state.add("Options", Options);
   },
 
   addGameMusic: function () {
