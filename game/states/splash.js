@@ -34,7 +34,7 @@ Splash.prototype = {
         families: ['TheMinion'],
         urls: ['assets/style/theminion.css']
       }
-    }
+    } 
   },
 
   init: function () {
@@ -74,7 +74,7 @@ Splash.prototype = {
   },
 
   create: function() {
-    this.status.setText('Ready!');
+    this.status.setText('Ready to Play!');
     this.addGameStates();
     this.addGameMusic();
 
