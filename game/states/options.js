@@ -1,5 +1,6 @@
 const Options = function () { };
 
+
 Options.prototype = {
 
     preload: function () {
@@ -7,6 +8,6 @@ Options.prototype = {
     },
 
     create: function () {
-        
+
     }
 };
