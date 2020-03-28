@@ -18,7 +18,6 @@ const config = {
             debug: false
         }
     }
-    
 };
 
 const ENEMY_1_SPEED = 1/5000;
